@@ -16,3 +16,4 @@ Add init.el file following to `~/.emacs.d/` location and restart emacs. Make sur
 * http://www.jesshamrick.com/2012/09/18/emacs-as-a-python-ide/
 * https://realpython.com/blog/python/emacs-the-best-python-editor/
 * http://aaronbedra.com/emacs.d/
+* https://github.com/wasamasa/dotemacs/blob/master/init.org#evil
