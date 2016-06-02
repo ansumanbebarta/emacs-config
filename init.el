@@ -135,7 +135,8 @@
 (require 'base16-ateliersulphurpool-dark-theme)
 
 ;; Fix modeline issue in mac
-(setq ns-use-srgb-colorspace nil)
+(if (eq system-type 'darwin)
+    (setq ns-use-srgb-colorspace nil))
 
 ;; Battery in percentage
 (fancy-battery-mode)
