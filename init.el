@@ -213,7 +213,6 @@
   (interactive)
   (ansi-term "/usr/local/bin/zsh"))
 
-
 ;;--------------------------------------------------------------------
 ;; Package key customizations
 ;;--------------------------------------------------------------------
@@ -246,7 +245,7 @@
   "T" 'use-zsh-ansi-term
 
   "f" 'helm-find-files
-  "b" 'switch-to-buffer
+  "b" 'persp-switch-to-buffer
   "k" 'kill-buffer
   "c" 'comment-or-uncomment-region
 
