@@ -29,13 +29,12 @@
     helm-projectile
     ;; Allows to bind commands to combination of keys
     key-chord
-    neotree
     ;; Explore later
     ;; paradox
     ;; Provide many workspaces (explore later)
     perspective
-    ;; powerline
     projectile
+    project-explorer
     ;; Checks pep8
     py-autopep8
     spaceline
@@ -180,10 +179,6 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
-;; Neotree-config
-(require 'neotree)
-(setq projectile-switch-project-action 'neotree-projectile-action)
-
 ;; Python setup
 (elpy-enable)
 
@@ -214,30 +209,15 @@
   (ansi-term "/usr/local/bin/zsh"))
 
 ;;--------------------------------------------------------------------
-;; Package key customizations
-;;--------------------------------------------------------------------
-
-(add-hook 'neotree-mode-hook
-  (lambda ()
-    (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-    (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
-    (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-    (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)))
-
-;;--------------------------------------------------------------------
 ;; Custom keys
 ;;--------------------------------------------------------------------
 
 ;; Fix for ansi term "4m" issue
 ;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
-;; (global-set-key (kbd "C-x a") 'use-zsh-ansi-term)
 
-;; Neotree toggle
-(global-set-key (kbd "C-x T") 'neotree-toggle)
-
-;; Escape to normal mode with 'jj' in evil-mode
+;; Escape to normal mode with 'jk' in evil-mode
 (setq key-chord-two-keys-delay 0.5)
-(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
 ;; Key configuration with evil-leader
 (evil-leader/set-key
@@ -259,8 +239,8 @@
   "pg" 'helm-projectile-grep
   "pi" 'projectile-invalidate-cache
 
-  ;; t strands for tree
-  "tt" 'neotree-toggle
+  ;; t stands for tree
+  "tt" 'project-explorer-toggle
 
   ;; w stands for workspace
   "ws" 'persp-switch
