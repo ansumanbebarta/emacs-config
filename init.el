@@ -21,6 +21,8 @@
     elpy
     evil
     evil-leader
+    ;; Gather PATH from shell
+    exec-path-from-shell
     ;; Used to show battery info in modeline
     fancy-battery
     ;; Realtime syntax checking
@@ -150,6 +152,10 @@
 ;; Package configuations
 ;;--------------------------------------------------------------------
 
+;; Gather PATH from shell as GUI emacs don't do by default
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
 ;; Evil-leader-config
 (require 'evil-leader)
 (global-evil-leader-mode)
@@ -189,6 +195,7 @@
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
+;; Replace your virtualenv name at below
 (let ((virtualenv-workon-starts-python -1))
   (pyvenv-workon "aic"))
 (when (executable-find "ipython")
