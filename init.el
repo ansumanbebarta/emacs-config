@@ -210,6 +210,8 @@
   (interactive)
   (find-file user-init-file))
 
+;; Fix for ansi term "4m" issue in mac
+;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
 (defun use-zsh-ansi-term ()
   "User zsh as default shell for ansi-term."
   (interactive)
@@ -219,8 +221,11 @@
 ;; Custom keys
 ;;--------------------------------------------------------------------
 
-;; Fix for ansi term "4m" issue
-;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
+;; Use up and down arrows to go up and down in history in ipython
+(define-key comint-mode-map (kbd "<up>")
+      'comint-previous-input)
+(define-key comint-mode-map (kbd "<next>")
+      'comint-next-input)
 
 ;; Escape to normal mode with 'jk' in evil-mode
 (setq key-chord-two-keys-delay 0.5)
