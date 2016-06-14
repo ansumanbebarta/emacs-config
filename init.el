@@ -212,6 +212,13 @@
 
 ;; Fix for ansi term "4m" issue in mac
 ;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
+;; Fix for zsh to play nice in ansi-term in linux
+(if (eq system-type 'gnu/linux)
+    (add-hook 'term-exec-hook
+          (function
+           (lambda ()
+	     (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))))
+
 (defun use-zsh-ansi-term ()
   "User zsh as default shell for ansi-term."
   (interactive)
