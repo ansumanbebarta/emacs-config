@@ -235,17 +235,22 @@
 (evil-leader/set-key
   "I" 'find-user-init-file
   "T" 'use-zsh-ansi-term
-
   "f" 'helm-find-files
-  "b" 'persp-switch-to-buffer
-  "k" 'kill-buffer
   "c" 'comment-or-uncomment-region
 
+  ;; b stands for buffer
+  "bk" 'kill-buffer
+  "br" 'rename-buffer
+  "bR" 'revert-buffer
+  "bs" 'persp-switch-to-buffer
+
+  ;; e stands for elpy
   "ed" 'elpy-goto-definition
   "es" 'elpy-shell-switch-to-shell
   "er" 'elpy-shell-send-region-or-buffer
   "ec" 'elpy-shell-send-current-statement
 
+  ;; p stands for project
   "pp" 'helm-projectile-switch-project
   "pf" 'helm-projectile-find-file
   "pg" 'helm-projectile-grep
