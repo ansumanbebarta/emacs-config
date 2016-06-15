@@ -67,3 +67,4 @@ You can always check init.el above defined keys.
 * https://realpython.com/blog/python/emacs-the-best-python-editor/
 * http://aaronbedra.com/emacs.d/
 * https://github.com/wasamasa/dotemacs/blob/master/init.org#evil
+* http://oremacs.com/2015/01/01/three-ansi-term-tips/

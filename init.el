@@ -224,6 +224,17 @@
   (interactive)
   (ansi-term "/usr/local/bin/zsh"))
 
+;; Adding hook to close buffer of ansi-term
+(defun close-ansi-term-buffer-on-exit ()
+  (let* ((buff (current-buffer))
+         (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+        (if (string= event "finished\n")
+            (kill-buffer ,buff))))))
+(add-hook 'term-exec-hook 'close-ansi-term-buffer-on-exit)
+
 ;;--------------------------------------------------------------------
 ;; Custom keys
 ;;--------------------------------------------------------------------
