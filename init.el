@@ -31,6 +31,7 @@
     helm-projectile
     ;; Allows to bind commands to combination of keys
     key-chord
+    linum-off
     ;; Explore later
     ;; paradox
     ;; Provide many workspaces (explore later)
@@ -129,6 +130,40 @@
      'default nil :font "Monaco 14"))
 
 ;;--------------------------------------------------------------------
+;; Custom functions and definations
+;;--------------------------------------------------------------------
+
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file user-init-file))
+
+;; Fix for ansi term "4m" issue in mac
+;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
+;; Fix for zsh to play nice in ansi-term in linux
+(if (eq system-type 'gnu/linux)
+    (add-hook 'term-exec-hook
+          (function
+           (lambda ()
+	     (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))))
+
+(defun use-zsh-ansi-term ()
+  "User zsh as default shell for ansi-term."
+  (interactive)
+  (ansi-term "/usr/local/bin/zsh"))
+
+;; Adding hook to close buffer of ansi-term
+(defun close-ansi-term-buffer-on-exit ()
+  (let* ((buff (current-buffer))
+         (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+        (if (string= event "finished\n")
+            (kill-buffer ,buff))))))
+(add-hook 'term-exec-hook 'close-ansi-term-buffer-on-exit)
+
+;;--------------------------------------------------------------------
 ;; Theme and modeline setup
 ;;--------------------------------------------------------------------
 
@@ -155,6 +190,9 @@
 ;; Gather PATH from shell as GUI emacs don't do by default
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
+;; Linum off mode
+(require 'linum-off)
 
 ;; Evil-leader-config
 (require 'evil-leader)
@@ -201,39 +239,6 @@
 (when (executable-find "ipython")
   (elpy-use-ipython))
 
-;;--------------------------------------------------------------------
-;; Custom functions
-;;--------------------------------------------------------------------
-
-(defun find-user-init-file ()
-  "Edit the `user-init-file', in another window."
-  (interactive)
-  (find-file user-init-file))
-
-;; Fix for ansi term "4m" issue in mac
-;; http://stackoverflow.com/questions/8918910/weird-character-zsh-in-emacs-terminal/8920373#8920373
-;; Fix for zsh to play nice in ansi-term in linux
-(if (eq system-type 'gnu/linux)
-    (add-hook 'term-exec-hook
-          (function
-           (lambda ()
-	     (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))))
-
-(defun use-zsh-ansi-term ()
-  "User zsh as default shell for ansi-term."
-  (interactive)
-  (ansi-term "/usr/local/bin/zsh"))
-
-;; Adding hook to close buffer of ansi-term
-(defun close-ansi-term-buffer-on-exit ()
-  (let* ((buff (current-buffer))
-         (proc (get-buffer-process buff)))
-    (set-process-sentinel
-     proc
-     `(lambda (process event)
-        (if (string= event "finished\n")
-            (kill-buffer ,buff))))))
-(add-hook 'term-exec-hook 'close-ansi-term-buffer-on-exit)
 
 ;;--------------------------------------------------------------------
 ;; Custom keys
