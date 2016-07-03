@@ -147,7 +147,13 @@
            (lambda ()
 	     (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))))
 
-(defun use-zsh-ansi-term ()
+(defun term-toggle-mode ()
+  (interactive)
+  (if (term-in-line-mode)
+      (term-char-mode)
+    (term-line-mode)))
+
+(defun start-zsh-ansi-term ()
   "User zsh as default shell for ansi-term."
   (interactive)
   (ansi-term "/usr/local/bin/zsh"))
@@ -257,7 +263,6 @@
 ;; Key configuration with evil-leader
 (evil-leader/set-key
   "I" 'find-user-init-file
-  "T" 'use-zsh-ansi-term
   "f" 'helm-find-files
   "c" 'comment-or-uncomment-region
 
@@ -278,6 +283,10 @@
   "pf" 'helm-projectile-find-file
   "pg" 'helm-projectile-grep
   "pi" 'projectile-invalidate-cache
+
+  ;; s stands for shell
+  "ss" 'start-zsh-ansi-term
+  "st" 'term-toggle-mode
 
   ;; t stands for tree
   "tt" 'project-explorer-toggle

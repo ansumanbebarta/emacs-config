@@ -28,7 +28,6 @@ I use EVIL package because I like VIM mode. So VIM keys will work for editing. I
 
 * basic keys
   - I     :    Start editing emacs init file
-  - T     :    Start ansi-term with zsh
   - f     :    Open a file
   - c     :    Comment or uncomment a region'comment-or-uncomment-region
 
@@ -49,6 +48,10 @@ I use EVIL package because I like VIM mode. So VIM keys will work for editing. I
   - pf    :    Find a file in project
   - pg    :    Grep inside project
   - pi    :    Empyt projectile cache
+
+* s stands for shell
+  - ss    :    Start shell
+  - st    :    Toggle between term-line-mode and term-char-mode (use term-line-mode while pasting from windows)
 
 * t stands for tree
   - tt    :    Toggle project explorer
