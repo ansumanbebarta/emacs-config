@@ -32,6 +32,7 @@
     ;; Allows to bind commands to combination of keys
     key-chord
     linum-off
+    magit
     ;; Explore later
     ;; paradox
     ;; Provide many workspaces (explore later)
@@ -41,6 +42,7 @@
     ;; Checks pep8
     py-autopep8
     spaceline
+    yaml-mode
     ))
 
 (mapc #'(lambda (package)
@@ -245,10 +247,17 @@
 (when (executable-find "ipython")
   (elpy-use-ipython))
 
+;; Add support for yaml
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 ;;--------------------------------------------------------------------
 ;; Custom keys
 ;;--------------------------------------------------------------------
+
+;; Magit status
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Use up and down arrows to go up and down in history in ipython
 (define-key comint-mode-map (kbd "<up>")
