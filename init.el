@@ -11,6 +11,7 @@
 
 (defvar myPackages
   '(
+    ace-window
     base16-theme
     ;; Use to change minor mode look on modeline
     diminish
@@ -20,6 +21,7 @@
     ;; epc
     elpy
     evil
+    evil-magit
     evil-leader
     ;; Gather PATH from shell
     exec-path-from-shell
@@ -32,7 +34,6 @@
     ;; Allows to bind commands to combination of keys
     key-chord
     linum-off
-    magit
     ;; Explore later
     ;; paradox
     ;; Provide many workspaces (explore later)
@@ -199,6 +200,9 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
+;; Ace window
+(require 'ace-window)
+
 ;; Linum off mode
 (require 'linum-off)
 
@@ -210,6 +214,9 @@
 ;; Evil-config
 (require 'evil)
 (evil-mode 1)
+
+;; Evil-magit-config
+(require 'evil-magit)
 
 ;; Key chord
 (key-chord-mode 1)
@@ -256,8 +263,8 @@
 ;; Custom keys
 ;;--------------------------------------------------------------------
 
-;; Magit status
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x o") 'ace-window)
 
 ;; Use up and down arrows to go up and down in history in ipython
 (define-key comint-mode-map (kbd "<up>")
