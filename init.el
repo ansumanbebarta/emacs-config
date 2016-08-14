@@ -81,6 +81,9 @@
 
 ;; Show line number on left and column number on mode line
 (global-linum-mode t)
+(if (display-graphic-p)
+    (setq linum-format "%5d \u2502 ")
+  (setq linum-format "%5d | "))
 (setq linum-format "%5d \u2502 ")
 (line-number-mode t)
 (setq line-number-display-limit-width 10000)
@@ -176,21 +179,25 @@
 ;; Theme and modeline setup
 ;;--------------------------------------------------------------------
 
-;; Theme
-(require 'base16-ateliersulphurpool-dark-theme)
+(defun apply-theme()
+  "Apply theme."
+  (require 'base16-ateliersulphurpool-dark-theme)
 
-;; Fix modeline issue in mac
+  ;; Battery in percentage
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t)
+
+  ;; Spaceline-config
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (setq spaceline-minor-modes-p nil))
+
 (if (eq system-type 'darwin)
     (setq ns-use-srgb-colorspace nil))
 
-;; Battery in percentage
-(fancy-battery-mode)
-(setq fancy-battery-show-percentage t)
-
-;; Spaceline-config
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
-(setq spaceline-minor-modes-p nil)
+;; Theme
+(if (display-graphic-p)
+    (apply-theme))
 
 ;;--------------------------------------------------------------------
 ;; Package configuations
