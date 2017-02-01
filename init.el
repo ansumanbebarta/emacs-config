@@ -289,9 +289,6 @@
 ;; Custom keys
 ;;--------------------------------------------------------------------
 
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x o") 'ace-window)
-
 ;; Use up and down arrows to go up and down in history in ipython
 (define-key comint-mode-map (kbd "<up>")
       'comint-previous-input)
@@ -305,10 +302,12 @@
 ;; Key configuration with evil-leader
 (evil-leader/set-key
   "I" 'find-user-init-file
-  "f" 'helm-find-files
   "c" 'comment-or-uncomment-region
+  "G" 'magit-status
+  "W" 'ace-window
 
   ;; b stands for buffer
+  "bf" 'helm-find-files
   "bk" 'kill-buffer
   "br" 'rename-buffer
   "bR" 'revert-buffer
