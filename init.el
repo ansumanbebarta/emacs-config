@@ -12,6 +12,7 @@
 (defvar myPackages
   '(
     ace-window
+    auto-complete
     base16-theme
     ;; Use to change minor mode look on modeline
     diminish
@@ -22,6 +23,7 @@
     elpy
     evil
     evil-magit
+    evil-matchit
     evil-leader
     ;; Gather PATH from shell
     exec-path-from-shell
@@ -31,6 +33,7 @@
     flycheck
     helm
     helm-projectile
+    jedi
     ;; Allows to bind commands to combination of keys
     key-chord
     linum-off
@@ -43,6 +46,7 @@
     ;; Checks pep8
     py-autopep8
     spaceline
+    virtualenvwrapper
     yaml-mode
     ))
 
@@ -57,6 +61,9 @@
 
 ;; Answer with y and n
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Make alias for encoding
+(define-coding-system-alias 'UTF-8 'utf-8)
 
 ;; Language
 (setq current-language-environment "English")
@@ -162,7 +169,7 @@
 (defun start-zsh-ansi-term ()
   "User zsh as default shell for ansi-term."
   (interactive)
-  (ansi-term "/usr/local/bin/zsh"))
+  (ansi-term "/bin/bash"))
 
 ;; Adding hook to close buffer of ansi-term
 (defun close-ansi-term-buffer-on-exit ()
@@ -175,13 +182,21 @@
             (kill-buffer ,buff))))))
 (add-hook 'term-exec-hook 'close-ansi-term-buffer-on-exit)
 
+(defun activate-venv (name)
+  "Activates virtualenv with given name"
+  (venv-workon name))
+ 
+(defun current-persp-name ()
+  "Return current perspective name"
+  (persp-name persp-curr))
+
 ;;--------------------------------------------------------------------
 ;; Theme and modeline setup
 ;;--------------------------------------------------------------------
 
 (defun apply-theme()
   "Apply theme."
-  (require 'base16-ateliersulphurpool-dark-theme)
+  (require 'base16-atelier-savanna-theme)
 
   ;; Battery in percentage
   (fancy-battery-mode)
@@ -225,6 +240,10 @@
 ;; Evil-magit-config
 (require 'evil-magit)
 
+;; Evil-matchit
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
+
 ;; Key chord
 (key-chord-mode 1)
 
@@ -245,21 +264,21 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
-;; Python setup
-(elpy-enable)
-
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-;; Replace your virtualenv name at below
-(let ((virtualenv-workon-starts-python -1))
-  (pyvenv-workon "aic"))
-(when (executable-find "ipython")
-  (elpy-use-ipython))
+;; Auto-complete
+(ac-config-default)
+(setq ac-use-quick-help -1)
+(add-hook 'python-mode-hook 'jedi:setup)
+ 
+;; Flycheck
+(global-flycheck-mode)
+ 
+;; TODO: Check for renaming of perspective
+(add-hook 'persp-created-hook
+      '(lambda ()
+         (activate-venv (current-persp-name))))
+(add-hook 'persp-switch-hook
+      '(lambda ()
+         (activate-venv (current-persp-name))))
 
 ;; Add support for yaml
 (require 'yaml-mode)
@@ -295,11 +314,9 @@
   "bR" 'revert-buffer
   "bs" 'persp-switch-to-buffer
 
-  ;; e stands for elpy
-  "ed" 'elpy-goto-definition
-  "es" 'elpy-shell-switch-to-shell
-  "er" 'elpy-shell-send-region-or-buffer
-  "ec" 'elpy-shell-send-current-statement
+  ;; j stands for jedi
+  "jd" 'jedi:goto-definition
+  "jD" 'jedi:get-in-function-call
 
   ;; p stands for project
   "pp" 'helm-projectile-switch-project
