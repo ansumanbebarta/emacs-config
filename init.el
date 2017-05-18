@@ -133,15 +133,6 @@
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines) (toggle-indicate-empty-lines))
 
-; Show side line
-(global-linum-mode t)
-(if (display-graphic-p)
-    (setq linum-format "%5d \u2502 ")
-  (setq linum-format "%5d | "))
-(setq linum-format "%5d \u2502 ")
-(line-number-mode t)
-(setq line-number-display-limit-width 10000)
-(column-number-mode t)
 
 ; Indentation and spaces for tabs.
 (setq indent-tabs-mode nil
@@ -178,6 +169,27 @@
 ; Put bookmarks somewhere else
 (setq bookmark-default-file "~/.emacs.d/etc/bookmarks")
 
+;; Linum mode
+;; ----------
+
+; Show side line
+(global-linum-mode t)
+
+(require 'linum-off)
+(add-to-list 'linum-disabled-modes-list 'project-explorer-mode)
+
+(if (display-graphic-p)
+    (setq linum-format "%5d \u2502 ")
+  (setq linum-format "%5d | "))
+
+(setq linum-format "%5d \u2502 ")
+(linum-on)
+(setq line-number-display-limit-width 10000)
+
+(column-number-mode t)
+
+
+
 ;; Theme
 ;; -----
 
@@ -209,18 +221,26 @@
 ;; Custom functions
 ;; ----------------
 
-(defun find-user-init-file ()
+(defun ans/find-user-init-file ()
   "Edit the EMACS init file in another window."
   (interactive)
   (find-file user-init-file))
 
-(defun activate-venv (name)
+(defun ans/activate-venv (name)
   "Activate virtualenv with given NAME."
   (venv-workon name))
 
-(defun current-persp-name ()
+(defun ans/current-persp-name ()
   "Return current perspective name."
   (persp-name persp-curr))
+
+(defun ans/goto-definition ()
+  "Include logic to make language independent."
+  (interactive)
+  (message "%s" major-mode)
+  (cond ((equal major-mode 'python-mode) (elpy-goto-definition))
+        (t (message "goto-definition for %s is not defined" major-mode)))
+  )
 
 ;; Evil
 ;; ----
@@ -242,7 +262,7 @@
 (setq helm-mode-fuzzy-match t)
 (setq helm-completion-in-region-fuzzy-match t)
 
-(projectile-global-mode)
+(projectile-mode)
 (setq projectile-enable-caching t)
 
 (persp-mode)
@@ -252,19 +272,27 @@
 
 (add-hook 'persp-created-hook
       '(lambda ()
-         (activate-venv (current-persp-name))))
+         (ans/activate-venv (ans/current-persp-name))))
 (add-hook 'persp-switch-hook
       '(lambda ()
-         (activate-venv (current-persp-name))))
+         (ans/activate-venv (ans/current-persp-name))))
 
 ; Flycheck
 (global-flycheck-mode)
+
+
+;; Programming language configurations
+;; -----------------------------------
+
+; Python setup
+(elpy-enable)
+(setq elpy-rpc-backend "jedi")
 
 ;; Key configurations
 ;; ------------------
 
 (evil-leader/set-key
-  "I" 'find-user-init-file
+  "I" 'ans/find-user-init-file
   "c" 'comment-or-uncomment-region
   "G" 'magit-status
   "W" 'ace-window
@@ -275,6 +303,10 @@
   "br" 'rename-buffer
   "bR" 'revert-buffer
   "bs" 'persp-switch-to-buffer
+
+  ;; l statnds for language
+  "lg" 'ans/goto-definition
+  "lb" 'ans/go-back
 
   ;; p stands for project
   "pp" 'helm-projectile-switch-project
