@@ -189,7 +189,6 @@
 (column-number-mode t)
 
 
-
 ;; Theme
 ;; -----
 
@@ -242,6 +241,16 @@
         (t (message "goto-definition for %s is not defined" major-mode)))
   )
 
+(defun ans/initlines (lines mode)
+  "Add initial LINES to specific MODE."
+  (when (and (equal major-mode mode) (equal 0 (buffer-size)))
+    (loop for line in lines
+          do (progn
+               (insert line)
+               (newline))
+          )
+  ))
+
 ;; Evil
 ;; ----
 
@@ -280,13 +289,27 @@
 ; Flycheck
 (global-flycheck-mode)
 
-
-;; Programming language configurations
+;; Python configurations
 ;; -----------------------------------
 
 ; Python setup
 (elpy-enable)
 (setq elpy-rpc-backend "jedi")
+(setq-default company-selection-wrap-around t)
+
+(defvar py-init-lines
+  '(
+    "#!/usr/bin/env python"
+    "# -*- coding: utf-8 -*-"
+    )
+  "Init lines to add to empty python files."
+  )
+
+(add-hook 'after-change-major-mode-hook
+          '(lambda ()
+             (ans/initlines py-init-lines 'python-mode)
+             )
+          )
 
 ;; Key configurations
 ;; ------------------
