@@ -289,13 +289,22 @@
 ; Flycheck
 (global-flycheck-mode)
 
+;; Company mode
+;; ------------
+
+(eval-after-load 'company
+  '(progn
+     (define-key company-active-map (kbd "TAB") 'company-select-next)
+     (define-key company-active-map [tab] 'company-select-next)))
+
+(setq-default company-selection-wrap-around t)
+
 ;; Python configurations
 ;; -----------------------------------
 
 ; Python setup
 (elpy-enable)
 (setq elpy-rpc-backend "jedi")
-(setq-default company-selection-wrap-around t)
 
 (remove-hook 'elpy-modules 'elpy-module-flymake)
 
