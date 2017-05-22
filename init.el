@@ -297,6 +297,8 @@
 (setq elpy-rpc-backend "jedi")
 (setq-default company-selection-wrap-around t)
 
+(remove-hook 'elpy-modules 'elpy-module-flymake)
+
 (defvar py-init-lines
   '(
     "#!/usr/bin/env python"
