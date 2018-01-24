@@ -114,6 +114,8 @@
 (setq inhibit-splash-screen t
       initial-scratch-message nil)
 
+(setq-default default-buffer-file-coding-system 'utf-8-unix)
+
 ; No scroll, tool or menu.
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
