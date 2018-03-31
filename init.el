@@ -231,6 +231,16 @@
   "Activate virtualenv with given NAME."
   (venv-workon name))
 
+(defun ans/overload-persp (name)
+  "Work on persp NAME to determine extra operations."
+  (let (
+	(env-name (replace-regexp-in-string "^py-" "" name))
+	(condition (eq (search "py-" name) 0))
+	)
+    (if condition (ans/activate-venv env-name))
+    )
+  )
+
 (defun ans/current-persp-name ()
   "Return current perspective name."
   (persp-name persp-curr))
@@ -283,10 +293,10 @@
 
 (add-hook 'persp-created-hook
       '(lambda ()
-         (ans/activate-venv (ans/current-persp-name))))
+         (ans/overload-persp (ans/current-persp-name))))
 (add-hook 'persp-switch-hook
       '(lambda ()
-         (ans/activate-venv (ans/current-persp-name))))
+         (ans/overload-persp (ans/current-persp-name))))
 
 ; Flycheck
 (global-flycheck-mode)
