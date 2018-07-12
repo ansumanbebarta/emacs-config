@@ -30,6 +30,8 @@ I use EVIL package because I like VIM mode. So VIM keys will work for editing. I
   - I     :    Start editing emacs init file
   - f     :    Open a file
   - c     :    Comment or uncomment a region'comment-or-uncomment-region
+  - W     :    Change emacs windows
+  - T     :    Open ansi-term
 
 * b stands for buffer
   - bk    :    Kill a buffer

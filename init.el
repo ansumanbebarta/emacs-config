@@ -171,6 +171,9 @@
 ; Put bookmarks somewhere else
 (setq bookmark-default-file "~/.emacs.d/etc/bookmarks")
 
+(exec-path-from-shell-copy-env "PATH")
+(exec-path-from-shell-copy-env "PYTHONPATH")
+
 ;; Linum mode
 ;; ----------
 
@@ -244,6 +247,24 @@
 (defun ans/current-persp-name ()
   "Return current perspective name."
   (persp-name persp-curr))
+
+(defun ans/close-term-buffer-on-exit ()
+  "Close 'ansi-term' buffer after exit."
+  (let* ((buff (current-buffer))
+	 (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+	(if (string= event "finished\n")
+	    (kill-buffer, buff))))))
+
+(defun ans/open-term ()
+  "Open 'ansi-term'."
+  (interactive)
+  (ansi-term "/bin/bash"))
+
+(add-hook 'term-exec-hook 'ans/close-term-buffer-on-exit)
+(eval-after-load "term" '(define-key term-raw-map (kbd "C-c C-y") 'term-paste))
 
 (defun ans/goto-definition ()
   "Include logic to make language independent."
@@ -342,6 +363,7 @@
   "c" 'comment-or-uncomment-region
   "G" 'magit-status
   "W" 'ace-window
+  "T" 'ans/open-term
 
   ;; b stands for buffer
   "bf" 'helm-find-files
