@@ -171,8 +171,10 @@
 ; Put bookmarks somewhere else
 (setq bookmark-default-file "~/.emacs.d/etc/bookmarks")
 
-(exec-path-from-shell-copy-env "PATH")
-(exec-path-from-shell-copy-env "PYTHONPATH")
+(if (not (eq system-type "windows-nt"))
+    (progn
+      (exec-path-from-shell-copy-env "PATH")
+      (exec-path-from-shell-copy-env "PYTHONPATH")))
 
 ;; Linum mode
 ;; ----------
