@@ -64,6 +64,7 @@
 
     ;; Evil
     evil
+    evil-escape
     evil-magit
     evil-leader
 
@@ -105,6 +106,7 @@
   (dolist (p required-packages)
     (when (not (package-installed-p p))
       (package-install p))))
+
 
 ;; Start up options
 ;; --------------------
@@ -297,6 +299,10 @@
 (evil-mode 1)
 
 (require 'evil-magit)
+
+(evil-escape-mode t)
+(setq-default evil-escape-key-sequence "jk")
+(setq-default evil-escape-delay 0.2)
 
 ;; Project setup
 ;; -------------
